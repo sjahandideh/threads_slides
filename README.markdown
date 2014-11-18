@@ -1,5 +1,9 @@
-# CSSS
-### CSS-based SlideShow System
+# Threads in Ruby: 10 things you should know
+### CSSS Slideshow
 
-Warning: Only works in latest Firefox, Opera, Safari or Chrome.
-For more information, see the [sample slideshow](http://lea.verou.me/csss/sample-slideshow.html) 
+This repository contains all my slides using
+[csss](https://github.com/LeaVerou/csss/wiki/CSSS-in-the-wild).
+
+In order to view the slides, you need to download the repository and
+open the index.html page in your browser. you can then move forward and
+backward using arrow keys.
