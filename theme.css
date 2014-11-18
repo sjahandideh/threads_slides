@@ -95,10 +95,14 @@ strong, b {
 	background: rgba(0,0,0,.5);
 	background-clip: padding-box;
 	text-shadow:.05em .05em .1em rgba(0,0,0,.4);
-	color: black;
+	color: white;
   border-radius: 25px;
 	border:2px solid transparent;
   margin: 30px;
+}
+
+.slide.center {
+  text-align: center;
 }
 
 #indicator {
@@ -110,17 +114,17 @@ strong, b {
 	.slide h2 {
 		font-family: 'Helvetica Neue', Helvetica, sans-serif;
 		font-weight: 100;
-		font-size: 1.2in;
+		font-size: 1in;
 	}
 	
 	.slide p,
 	.slide li {
-		font-weight: bold;
+		/*font-weight: bold;*/
 		letter-spacing: -.03em;
 	}
 		
 	.slide > ul {
-		list-style:none;	
+		list-style:none;
 	}
 	
 	.slide ol {
@@ -153,7 +157,8 @@ strong, b {
 			}
 			
 section > header.slide {
-	background-color: rgba(250,250,250,.6);
+	background-color: rgba(200,200,200,.8);
+	color: black;
 }
 
 	section > header.slide > h1 {
@@ -173,7 +178,7 @@ section > header.slide {
 	background: #f80;
 	background: linear-gradient(#fa0, #f80);
 	color: black;
-	font-weight: bold;
+	/*font-weight: bold;*/
 	letter-spacing: -.05em;
 	line-height: .85;
 	text-shadow: .05em .05em .1em rgba(0,0,0,.4);

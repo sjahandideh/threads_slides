@@ -52,3 +52,26 @@ img.icon {
   padding: 0;
   margin: 0;
 }
+
+.full {
+  width: 100%;
+  display: inline-block;
+  border: 0;
+}
+
+.half {
+  width: 49%;
+  display: inline-block;
+  border: 0;
+  vertical-align: top;
+}
+
+.left {
+  align: left;
+  text-align: left;
+}
+
+.right {
+  align: right;
+  text-align: right;
+}
