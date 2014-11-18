@@ -1,9 +1,29 @@
 
-1. Thread vs Process
-  - Threads have two aspects: Concurrency and Parallelism
-  - each of these can increase performance and even memory usage
+1. Threading vs Process Forking:
+  - Threads have two aspects: Concurrency and Parallelism (each can increase performance and even memory usage)
+  - Threads on the other hand have considerably less overhead since they share
+    address space, memory,
+    and allow easier communication vs Process Forks.
+  - One of the benefits of threading is that you do not have to worry about zombie processes since all threads die when the process dies, avoiding the issue of zombies
+    whereas with Forking: If the parent dies while there are children that haven’t exited, then those children become zombies.
+  - Forking is expensive. it uses a lot of cup
 
-2. what is the difference between Thread in MRI vs JRuby and Rubinius
+2. concurrent mutations need to be synchronized to have a threadsafe code
+  - Problem: multiple threads share variables and try to modify them at the same time
+  - Solution: Lock/Semaphore/Mutex (short-hand for mutual exclusion)
+
+  - a semaphore is a variable or abstract data type that is used for controlling access, by multiple processes, to a common resource in a parallel programming or a multi user environment
+  - Mutex: is sued to synchronize access to a section of a code So only one thread at a time can access that code
+  - multi-threaded version with a mutex is actually slower than the single-threaded version
+
+3. what does threadsafe mean in Ruby? Is Ruby threadsafe? Is Rails threadsafe?
+  - wikipedia: A piece of code is thread-safe if it only manipulates shared data structures in a manner that guarantees safe execution by multiple threads at the same time
+  - a fully Thread safe: Implementation is guaranteed to be free of race conditions when accessed by multiple threads simultaneously.
+  threadsafe: if you run a code a few times with threads the result will always be the same.
+  Ruby is Not threadsafe. ex. Array and Hash.
+  - is rails threadsafe? the vast majority of normal, day-to-day Rails programming is inherently threadsafe
+
+4. what is the difference between Thread in MRI vs JRuby and Rubinius
   - GVL(Giant VM Lock) or GIL (Global Interpreter Lock) in MRI: it basically wrapes all your code in a Mutex!
   - GVL basically prevents Parallelism except for one case:
     If you have one thread that's waiting on IO (ie. waiting for a response from the DB), MRI will allow another thread to run in parallel.
@@ -13,49 +33,23 @@
     Rather than a global lock, key parts of the runtimes are protected with fine-grained locks so that their internals are thread-safe.
     this allows your code to be truly parallel
 
-3. what does threadsafe mean in Ruby? Is Ruby threadsafe? Is Rails threadsafe?
-  - wikipedia: A piece of code is thread-safe if it only manipulates shared data structures in a manner that guarantees safe execution by multiple threads at the same time
-  - a fully Thread safe: Implementation is guaranteed to be free of race conditions when accessed by multiple threads simultaneously.
-  threadsafe: if you run a code a few times with threads the result will always be the same.
-  Ruby is Not threadsafe. ex. Array and Hash.
-  - is rails threadsafe? the vast majority of normal, day-to-day Rails programming is inherently threadsafe
-
-4. What to watch for to make sure an application is threadsafe?
-  - ? ruby arrays ? if in JRuby or Rubinius
-  - class variables
-  - global variables
-  ....
-
-5. concurrent mutations need to be synchronized to have a threadsafe code
-  - Problem: multiple threads share variables and try to modify them at the same time
-  - Solution: Lock/Semaphore/Mutex (short-hand for mutual exclusion)
-
-  - a semaphore is a variable or abstract data type that is used for controlling access, by multiple processes, to a common resource in a parallel programming or a multi user environment
-  - Mutex: is sued to synchronize access to a section of a code
-
-  - So only one thread at a time can access that code
-  - multi-threaded version with a mutex is actually slower than the single-threaded version
-
-6. Performance:
+5. Performance:
   - using Parallelism is supposed to increase the performance.
   - Forking is more expensive than Threading even in MRI.
   - Threads make Concurrency as well as Parallelism possible. Now Concurrency alone can still increase perfomance even without Parallelism.
     Concurrency: If the workload of a thread blocks on I/O, Ruby can context-switch to other threads and do other work until the I/O finishes. This could happen when the workload reaches out to an external API, shells out to another command, or is accessing the file system.
 
-7. Memory:
+6. Memory:
   - Threads are more memory efficient
     - Thread share the same address space.
     - Virtual Memory Allocation: they dont need a seperate Virtual memory allocation
     - Context Switch: the process of storing and restoring the state (context) of a process or thread so that execution can be resumed from the same point at a later time. This enables multiple processes to share a single CPU.
 
-8. Threading vs Forking:
-  - i.e Sidekiq
-  - Threads on the other hand have considerably less overhead since they share
-    address space,
-    memory, and allow easier communication vs Process Forks.
-  - One of the benefits of threading is that you do not have to worry about zombie processes since all threads die when the process dies, avoiding the issue of zombies
-    whereas with Forking: If the parent dies while there are children that haven’t exited, then those children become zombies.
-  - Forking is expensive. it uses a lot of cup
+7. What to watch for to make sure an application is threadsafe?
+  - ? ruby arrays ? if in JRuby or Rubinius
+  - class variables
+  - global variables
+  ....
 
 10. Future: replacing GVL with HTM (Hardware Transactional Memory)?
   - Transactional Memory: attempts to simplify concurrent programming by allowing a group of load and store instructions to execute in an atomic way (means it successfully changes the state of the app or has no effect at all)

@@ -1,0 +1,49 @@
+  - Concurrency vs Paralellism:
+      Rob Pike - 'Concurrency Is Not Parallelism'
+      Concurrency: the composition of executing independantly executing processes. - dealing with a lot of things at once.
+      Parallelism: the simultanious execution of multiple things. -
+doing a lot of things at once.
+
+  - in Ruby MRI: Concurrency is possible but Parallelism is not!
+
+Puma vs Webricks:
+  - by example, add this to a controller action:
+      puts "Hi"
+      sleep 2
+  - then when u run web server and do 'repeat 5 (curl localhost:3000/foo &)', webrick prints them with 2 min sleep vs puma prints them all at once.
+
+Threadsafe! enables eagerloading that may cause unexpected issues in the
+app.
+
+Mutex to the rescue:
+  - class variables
+  - instance variables at the class level
+  - global variables: $
+  - constants
+  - use .freeze on mutables in ruby such as strings: FOO =
+    "foo".freeze to make them immutable and therefore threadsafe.
+  - after the application has loaded, stop inserting methods into
+    classes dynamically.
+  - make sure all the gems and their dependencies are threadsafe.
+  - db pool size - 1 = the number of threads that can run at the same
+    time
+
+
+If a gem uses STDOUT.puts, etc, be careful with piping your logs. STDOUT
+is a ruby global variable. Sidekiq for instance uses STDOUT.
+
+Threads in Ruby MRI vs JRuby and Rubinius:
+  - MRI: has Global Interpreter Lock, therefore no two threads truely
+    are concurrent!
+  - JRuby and Rubinius don't have GIL, therefore are truely concurrent.
+  - example:
+      a = []
+
+      Thread.new do
+        10.times do
+          a << nil        
+        end
+      end
+
+      puts a.size
+  - the result of this example is only always correct in MRI
